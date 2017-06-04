@@ -1,0 +1,16 @@
+body {
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+p.description {
+    color: grey;
+}
+
+img.img-def{
+    max-height: 200px;
+}
