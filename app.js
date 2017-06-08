@@ -10,6 +10,7 @@ var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
 var validator = require('express-validator');
+var MongoStore = require('connect-mongo')(session);
 
 
 mongoose.connect('localhost:27017/shopping-cart', function(err){
@@ -41,7 +42,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(cookieParser());
 //resave and saveUnitialized for storing session on the server for every request which we don't want so it has been set to false
-app.use(session({secret: 'mysupersecret', resave: false, saveUninitialized: false}));
+app.use(session(
+    {
+        secret: 'mysupersecret', 
+        resave: false, 
+        saveUninitialized: false,
+        store: new MongoStore({
+            mongooseConnection : mongoose.connection
+        }),
+        cookie: { maxAge: 180 * 60 *1000} //180 mins
+    }
+));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,7 +60,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req,res,next){
    res.locals.login = req.isAuthenticated();
-    next();
+   res.locals.session = req.session;
+   next();
 });
 
 
