@@ -21,14 +21,14 @@ Product.find(function(error, docs){
 
 router.get('/add-to-cart/:id', function(req,res,next){
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
+    var cart = new Cart(req.session.cart ? req.session.cart : {items: {}});
     
     Product.findById(productId, function(err, product){
         if(err)
             {
                 return res.redirect('/');
             }
-        cart.add(product, product.id);
+        cart.addnewItems(product, product.id);
         req.session.cart = cart;
         console.log(req.session.cart);
         res.redirect('/');
