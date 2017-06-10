@@ -1,7 +1,7 @@
 module.exports = function Cart(oldCart){
-    this.items = oldCart.items;
-    this.totalQty = oldCart.totalQty;
-    this.toalPrice = oldCart.totalPrice;
+    this.items = oldCart.items || {};
+    this.totalQty = oldCart.totalQty || 0;
+    this.totalPrice = oldCart.totalPrice || 0;
     
     this.addnewItems = function(item, id){
         //Will not a product if it already exists in the cart if it exists, then just update the quantity.
@@ -13,7 +13,7 @@ module.exports = function Cart(oldCart){
                 storedItem.quantity++;
                 storedItem.price = storedItem.item.price * storedItem.quantity;
                 this.totalQty++;
-                this.totalPrice += storedItem.price;
+                this.totalPrice += storedItem.item.price;
             }
     
      this.generateArray = function(){
